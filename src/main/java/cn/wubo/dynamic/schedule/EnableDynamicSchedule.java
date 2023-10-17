@@ -1,7 +1,7 @@
 package cn.wubo.dynamic.schedule;
 
 
-import cn.wubo.dynamic.schedule.core.DynamicScheduleConfig;
+import cn.wubo.dynamic.schedule.config.DynamicScheduleConfig;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;

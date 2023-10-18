@@ -2,12 +2,15 @@ package cn.wubo.task.core;
 
 import lombok.Data;
 
+import java.io.Serializable;
+import java.util.List;
+
 @Data
-public class JobInfo {
+public class JobInfo implements Serializable {
     /**
      * 任务ID
      */
-    private Integer jobId;
+    private String jobId;
     /**
      * bean名称
      */
@@ -19,7 +22,7 @@ public class JobInfo {
     /**
      * 方法参数: 执行service里面的哪一种方法
      */
-    private String methodParams;
+    private List<Object> methodParams;
     /**
      * cron表达式
      */

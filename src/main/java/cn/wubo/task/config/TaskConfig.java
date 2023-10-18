@@ -1,9 +1,9 @@
-package cn.wubo.dynamic.schedule.config;
+package cn.wubo.task.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableConfigurationProperties({DynamicScheduleProperties.class})
-public class DynamicScheduleConfig {
+@EnableConfigurationProperties({TaskProperties.class})
+public class TaskConfig {
 }

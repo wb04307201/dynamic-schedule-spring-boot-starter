@@ -1,4 +1,4 @@
-package cn.wubo.task.core;
+package cn.wubo.dynamic.schedule.core;
 
 import lombok.Getter;
 import org.springframework.beans.BeansException;

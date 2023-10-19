@@ -1,6 +1,6 @@
-package cn.wubo.task.core;
+package cn.wubo.dynamic.schedule.core;
 
-import cn.wubo.task.exception.TaskRuntimeException;
+import cn.wubo.dynamic.schedule.exception.BeanMethodRunnableException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TaskRunnable implements Runnable {
+public class BeanMethodRunnable implements Runnable {
 
     private final String beanName;
 
@@ -16,11 +16,11 @@ public class TaskRunnable implements Runnable {
 
     private final List<Object> methodParams;
 
-    public TaskRunnable(String beanName, String methodName) {
+    public BeanMethodRunnable(String beanName, String methodName) {
         this(beanName, methodName, new ArrayList<>());
     }
 
-    public TaskRunnable(String beanName, String methodName, List<Object> methodParams) {
+    public BeanMethodRunnable(String beanName, String methodName, List<Object> methodParams) {
         this.beanName = beanName;
         this.methodName = methodName;
         this.methodParams = methodParams;
@@ -30,7 +30,7 @@ public class TaskRunnable implements Runnable {
     public void run() {
         Object target = SpringContextUtils.getBean(beanName);
         try {
-            Method method = null;
+            Method method;
             if (methodParams.isEmpty()) {
                 method = target.getClass().getMethod(methodName);
                 method.invoke(target);
@@ -39,7 +39,7 @@ public class TaskRunnable implements Runnable {
                 method.invoke(target, methodParams);
             }
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            throw new TaskRuntimeException(e.getMessage(), e);
+            throw new BeanMethodRunnableException(e.getMessage(), e);
         }
     }
 }

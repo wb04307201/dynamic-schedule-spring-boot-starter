@@ -3,9 +3,12 @@ package cn.wubo.dynamic.schedule.config;
 import cn.wubo.dynamic.schedule.core.DynamicScheduledTaskService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 @Configuration
+@ComponentScan(value = "cn.wubo.dynamic.schedule.core")
 @EnableConfigurationProperties({DynamicScheduleProperties.class})
 public class DynamicScheduleConfig {
 

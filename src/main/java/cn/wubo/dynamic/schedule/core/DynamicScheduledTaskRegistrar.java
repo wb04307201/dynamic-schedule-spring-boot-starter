@@ -30,11 +30,12 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
 
 
     /**
-     * 新增任务
+     * 添加定时任务
      *
-     * @param taskName
-     * @param cron
-     * @param runnable
+     * @param taskName 任务名称
+     * @param cron 执行计划
+     * @param runnable 任务执行逻辑
+     * @return 添加成功返回true，已存在相同任务名称返回false
      */
     public Boolean addCronTask(String taskName, String cron, Runnable runnable) {
         if (scheduledTaskMap.containsKey(taskName)) {
@@ -48,23 +49,37 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
         return Boolean.TRUE;
     }
 
+
+
     /**
-     * 删除任务
+     * 取消cron任务
      *
-     * @param taskName
+     * @param taskName 任务名称
      */
     public void cancelCronTask(String taskName) {
+        // 获取指定任务对象
         ScheduledTask scheduledTask = scheduledTaskMap.get(taskName);
         if (null != scheduledTask) {
+            // 取消任务
             scheduledTask.cancel();
+            // 从任务映射中移除任务
             scheduledTaskMap.remove(taskName);
         }
-        log.info("定时任务[{}}]删除成功", taskName);
+        // 记录日志，显示任务删除成功
+        log.info("定时任务[{}]删除成功", taskName);
     }
 
+
+    /**
+     * 重写父类的destroy方法，用于销毁对象
+     */
     @Override
     public void destroy() {
         super.destroy();
+        /**
+         * 遍历scheduledTaskMap的所有值，并调用每个值的cancel方法
+         */
         scheduledTaskMap.values().forEach(ScheduledTask::cancel);
     }
+
 }

@@ -12,23 +12,27 @@ public class DynamicScheduledTaskService {
         this.dynamicScheduledTaskRegistrar = new DynamicScheduledTaskRegistrar(dynamicScheduleProperties.getPoolSize(), dynamicScheduleProperties.getThreadNamePrefix(), dynamicScheduleProperties.getRemoveOnCancel());
     }
 
+
     /**
-     * 新增任务
+     * 添加定时任务
      *
-     * @param taskName
-     * @param cron
+     * @param taskName 任务名称
+     * @param cron 表达式
+     * @param runnable 任务执行逻辑
      */
     public void add(String taskName, String cron, Runnable runnable) {
         Boolean result = dynamicScheduledTaskRegistrar.addCronTask(taskName, cron, runnable);
-        log.info("定时任务添加结果：" + result);
+        log.debug("定时任务添加结果：" + result);
     }
 
+
     /**
-     * 取消任务
+     * 取消指定任务名称的任务。
      *
-     * @param taskName
+     * @param taskName 要取消的任务名称
      */
     public void cancel(String taskName) {
         dynamicScheduledTaskRegistrar.cancelCronTask(taskName);
     }
+
 }

@@ -32,10 +32,10 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
     /**
      * 添加定时任务
      *
-     * @param taskName 任务名称
-     * @param cron 执行计划
-     * @param runnable 任务执行逻辑
-     * @return 添加成功返回true，已存在相同任务名称返回false
+     * @param taskName  任务名称
+     * @param cron      执行计划
+     * @param runnable  任务执行逻辑
+     * @return  添加成功返回true，已存在相同任务名称返回false
      */
     public Boolean addCronTask(String taskName, String cron, Runnable runnable) {
         if (scheduledTaskMap.containsKey(taskName)) {
@@ -48,6 +48,7 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
         log.info("定时任务[{}]新增成功", taskName);
         return Boolean.TRUE;
     }
+
 
 
 
@@ -68,6 +69,7 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
         // 记录日志，显示任务删除成功
         log.info("定时任务[{}]删除成功", taskName);
     }
+
 
 
     /**

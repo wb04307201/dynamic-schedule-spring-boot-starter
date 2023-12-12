@@ -6,7 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BeanMethodRunnable implements Runnable {
 
@@ -39,7 +38,7 @@ public class BeanMethodRunnable implements Runnable {
                 method.invoke(target);
             } else {
                 // 获取目标对象的带参数方法
-                method = target.getClass().getMethod(methodName, methodParams.stream().map(Object::getClass).collect(Collectors.toList()).toArray(new Class<?>[0]));
+                method = target.getClass().getMethod(methodName, methodParams.stream().map(Object::getClass).toArray(Class<?>[]::new));
                 // 调用目标对象的带参方法，并传入参数
                 method.invoke(target, methodParams);
             }

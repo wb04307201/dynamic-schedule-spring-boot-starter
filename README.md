@@ -23,7 +23,13 @@
 ### 动态增加删除任务
 ```java
 taskService.add(任务名称, cron, Runable);
+// 添加Cron表达式定时任务
 taskService.add(任务名称, cron, () -> {// TODO 业务});
+// 可以通过集成Runnable接口封装执行
 taskService.add(任务名称, cron, new BeanMethodRunnable(bean名称, method名称，方法入参));
+// 添加固定延迟定时任务
+taskService.addFixedDelayTask(任务名称, 延迟时间, 初始延迟时间, () -> {// TODO 业务});
+// 添加固定频率定时任务
+taskService.addFixedRateTask(任务名称, 定时时间间隔, 初始延迟时间, () -> {// TODO 业务});
 taskService.cancel(任务名称);
 ```

@@ -63,7 +63,6 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
             return Boolean.FALSE;
         }
         FixedDelayTask fixedDelayTask = new FixedDelayTask(runnable, interval, initialDelay);
-        this.scheduleFixedDelayTask(fixedDelayTask);
         ScheduledTask scheduledTask = this.scheduleFixedDelayTask(fixedDelayTask);
         scheduledTaskMap.put(taskName, scheduledTask);
         log.info("定时任务[{}]新增成功", taskName);

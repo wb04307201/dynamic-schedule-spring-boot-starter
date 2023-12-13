@@ -50,8 +50,6 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
     }
 
 
-
-
     /**
      * 取消cron任务
      *
@@ -69,7 +67,6 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
         // 记录日志，显示任务删除成功
         log.info("定时任务[{}]删除成功", taskName);
     }
-
 
 
     /**

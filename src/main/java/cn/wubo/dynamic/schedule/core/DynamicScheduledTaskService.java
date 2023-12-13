@@ -14,14 +14,42 @@ public class DynamicScheduledTaskService {
 
 
     /**
-     * 添加定时任务
+     * 添加Cron表达式定时任务
      *
      * @param taskName 任务名称
-     * @param cron 表达式
-     * @param runnable 任务执行逻辑
+     * @param cron     定时表达式
+     * @param runnable 定时任务的实现
      */
     public void add(String taskName, String cron, Runnable runnable) {
         Boolean result = dynamicScheduledTaskRegistrar.addCronTask(taskName, cron, runnable);
+        log.debug("定时任务添加结果：" + result);
+    }
+
+
+    /**
+     * 添加固定延迟定时任务
+     *
+     * @param taskName     任务名称
+     * @param interval     延迟时间
+     * @param initialDelay 初始延迟时间
+     * @param runnable     定时任务的实现
+     */
+    public void addFixedDelayTask(String taskName, Long interval, Long initialDelay, Runnable runnable) {
+        Boolean result = dynamicScheduledTaskRegistrar.addFixedDelayTask(taskName, interval, initialDelay, runnable);
+        log.debug("定时任务添加结果：" + result);
+    }
+
+
+    /**
+     * 添加固定频率定时任务
+     *
+     * @param taskName     任务名称
+     * @param interval     定时时间间隔
+     * @param initialDelay 初始延迟时间
+     * @param runnable     定时任务的实现
+     */
+    public void addFixedRateTask(String taskName, Long interval, Long initialDelay, Runnable runnable) {
+        Boolean result = dynamicScheduledTaskRegistrar.addFixedRateTask(taskName, interval, initialDelay, runnable);
         log.debug("定时任务添加结果：" + result);
     }
 

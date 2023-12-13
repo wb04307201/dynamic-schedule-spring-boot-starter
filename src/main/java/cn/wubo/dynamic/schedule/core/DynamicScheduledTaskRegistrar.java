@@ -2,9 +2,7 @@ package cn.wubo.dynamic.schedule.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.scheduling.config.CronTask;
-import org.springframework.scheduling.config.ScheduledTask;
-import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+import org.springframework.scheduling.config.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,12 +28,12 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
 
 
     /**
-     * 添加定时任务
+     * 添加Cron表达式定时任务
      *
-     * @param taskName  任务名称
-     * @param cron      执行计划
-     * @param runnable  任务执行逻辑
-     * @return  添加成功返回true，已存在相同任务名称返回false
+     * @param taskName 任务名称
+     * @param cron     定时任务的cron表达式
+     * @param runnable 定时任务的实现类
+     * @return 添加成功返回true，添加失败返回false
      */
     public Boolean addCronTask(String taskName, String cron, Runnable runnable) {
         if (scheduledTaskMap.containsKey(taskName)) {
@@ -44,6 +42,51 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
         }
         CronTask cronTask = new CronTask(runnable, cron);
         ScheduledTask scheduledTask = this.scheduleCronTask(cronTask);
+        scheduledTaskMap.put(taskName, scheduledTask);
+        log.info("定时任务[{}]新增成功", taskName);
+        return Boolean.TRUE;
+    }
+
+
+    /**
+     * 添加固定延迟任务
+     *
+     * @param taskName     任务名称
+     * @param interval     延迟时间（单位：毫秒）
+     * @param initialDelay 初始延迟时间（单位：毫秒）
+     * @param runnable     任务执行逻辑
+     * @return 添加成功返回true，添加失败返回false
+     */
+    public Boolean addFixedDelayTask(String taskName, Long interval, Long initialDelay, Runnable runnable) {
+        if (scheduledTaskMap.containsKey(taskName)) {
+            log.error("定时任务[{}}]已存在，添加失败", taskName);
+            return Boolean.FALSE;
+        }
+        FixedDelayTask fixedDelayTask = new FixedDelayTask(runnable, interval, initialDelay);
+        this.scheduleFixedDelayTask(fixedDelayTask);
+        ScheduledTask scheduledTask = this.scheduleFixedDelayTask(fixedDelayTask);
+        scheduledTaskMap.put(taskName, scheduledTask);
+        log.info("定时任务[{}]新增成功", taskName);
+        return Boolean.TRUE;
+    }
+
+
+    /**
+     * 添加固定频率定时任务
+     *
+     * @param taskName     任务名称
+     * @param interval     任务执行间隔
+     * @param initialDelay 初始延迟时间
+     * @param runnable     任务执行逻辑
+     * @return 添加成功返回true，添加失败返回false
+     */
+    public Boolean addFixedRateTask(String taskName, Long interval, Long initialDelay, Runnable runnable) {
+        if (scheduledTaskMap.containsKey(taskName)) {
+            log.error("定时任务[{}}]已存在，添加失败", taskName);
+            return Boolean.FALSE;
+        }
+        FixedRateTask fixedRateTask = new FixedRateTask(runnable, interval, initialDelay);
+        ScheduledTask scheduledTask = this.scheduleFixedRateTask(fixedRateTask);
         scheduledTaskMap.put(taskName, scheduledTask);
         log.info("定时任务[{}]新增成功", taskName);
         return Boolean.TRUE;

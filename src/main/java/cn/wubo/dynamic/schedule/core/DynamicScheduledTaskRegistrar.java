@@ -4,12 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.*;
 
+import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Slf4j
 public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
 
+    private static final String ERROR_MSG = "定时任务[{}}]已存在，添加失败";
+    private static final String SUCCESS_MSG = "定时任务[{}]新增成功";
     private final Map<String, ScheduledTask> scheduledTaskMap = new LinkedHashMap<>(16);
 
     public DynamicScheduledTaskRegistrar(Integer poolSize, String threadNamePrefix, Boolean removeOnCancel) {
@@ -37,13 +40,13 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
      */
     public Boolean addCronTask(String taskName, String cron, Runnable runnable) {
         if (scheduledTaskMap.containsKey(taskName)) {
-            log.error("定时任务[{}}]已存在，添加失败", taskName);
+            log.error(ERROR_MSG, taskName);
             return Boolean.FALSE;
         }
         CronTask cronTask = new CronTask(runnable, cron);
         ScheduledTask scheduledTask = this.scheduleCronTask(cronTask);
         scheduledTaskMap.put(taskName, scheduledTask);
-        log.info("定时任务[{}]新增成功", taskName);
+        log.info(SUCCESS_MSG, taskName);
         return Boolean.TRUE;
     }
 
@@ -59,13 +62,13 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
      */
     public Boolean addFixedDelayTask(String taskName, Long interval, Long initialDelay, Runnable runnable) {
         if (scheduledTaskMap.containsKey(taskName)) {
-            log.error("定时任务[{}}]已存在，添加失败", taskName);
+            log.error(ERROR_MSG, taskName);
             return Boolean.FALSE;
         }
-        FixedDelayTask fixedDelayTask = new FixedDelayTask(runnable, interval, initialDelay);
+        FixedDelayTask fixedDelayTask = new FixedDelayTask(runnable, Duration.ofSeconds(interval), Duration.ofSeconds(initialDelay));
         ScheduledTask scheduledTask = this.scheduleFixedDelayTask(fixedDelayTask);
         scheduledTaskMap.put(taskName, scheduledTask);
-        log.info("定时任务[{}]新增成功", taskName);
+        log.info(SUCCESS_MSG, taskName);
         return Boolean.TRUE;
     }
 
@@ -81,13 +84,13 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
      */
     public Boolean addFixedRateTask(String taskName, Long interval, Long initialDelay, Runnable runnable) {
         if (scheduledTaskMap.containsKey(taskName)) {
-            log.error("定时任务[{}}]已存在，添加失败", taskName);
+            log.error(ERROR_MSG, taskName);
             return Boolean.FALSE;
         }
-        FixedRateTask fixedRateTask = new FixedRateTask(runnable, interval, initialDelay);
+        FixedRateTask fixedRateTask = new FixedRateTask(runnable, Duration.ofSeconds(interval), Duration.ofSeconds(initialDelay));
         ScheduledTask scheduledTask = this.scheduleFixedRateTask(fixedRateTask);
         scheduledTaskMap.put(taskName, scheduledTask);
-        log.info("定时任务[{}]新增成功", taskName);
+        log.info(SUCCESS_MSG, taskName);
         return Boolean.TRUE;
     }
 

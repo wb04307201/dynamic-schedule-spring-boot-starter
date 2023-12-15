@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DynamicScheduledTaskService {
 
+    private static final String DEBUG_MSG = "定时任务添加结果：{}";
+
     private final DynamicScheduledTaskRegistrar dynamicScheduledTaskRegistrar;
 
     public DynamicScheduledTaskService(DynamicScheduleProperties dynamicScheduleProperties) {
@@ -22,7 +24,7 @@ public class DynamicScheduledTaskService {
      */
     public void add(String taskName, String cron, Runnable runnable) {
         Boolean result = dynamicScheduledTaskRegistrar.addCronTask(taskName, cron, runnable);
-        log.debug("定时任务添加结果：" + result);
+        log.debug(DEBUG_MSG, result);
     }
 
 
@@ -36,7 +38,7 @@ public class DynamicScheduledTaskService {
      */
     public void addFixedDelayTask(String taskName, Long interval, Long initialDelay, Runnable runnable) {
         Boolean result = dynamicScheduledTaskRegistrar.addFixedDelayTask(taskName, interval, initialDelay, runnable);
-        log.debug("定时任务添加结果：" + result);
+        log.debug(DEBUG_MSG, result);
     }
 
 
@@ -50,7 +52,7 @@ public class DynamicScheduledTaskService {
      */
     public void addFixedRateTask(String taskName, Long interval, Long initialDelay, Runnable runnable) {
         Boolean result = dynamicScheduledTaskRegistrar.addFixedRateTask(taskName, interval, initialDelay, runnable);
-        log.debug("定时任务添加结果：" + result);
+        log.debug(DEBUG_MSG, result);
     }
 
 

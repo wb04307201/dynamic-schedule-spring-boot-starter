@@ -52,15 +52,35 @@ public class SpringContextUtils implements ApplicationContextAware {
     }
 
 
+    /**
+     * 判断应用上下文中是否包含指定名称的bean
+     *
+     * @param name 要判断的bean名称
+     * @return 如果包含指定名称的bean则返回true，否则返回false
+     */
     public static boolean containsBean(String name) {
         return getApplicationContext().containsBean(name);
     }
 
+
+    /**
+     * 判断给定Bean是否是单例
+     * @param name Bean的名称
+     * @return 如果Bean是单例则返回true，否则返回false
+     */
     public static boolean isSingleton(String name) {
         return getApplicationContext().isSingleton(name);
     }
 
+
+    /**
+     * 获取指定名称的对象类型。
+     *
+     * @param name 对象的名称
+     * @return 指定名称的对象类型
+     */
     public static Class<? extends Object> getType(String name) {
         return getApplicationContext().getType(name);
     }
+
 }

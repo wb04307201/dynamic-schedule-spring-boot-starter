@@ -17,8 +17,15 @@ public class DynamicScheduleConfig {
         this.dynamicScheduleProperties = dynamicScheduleProperties;
     }
 
+    /**
+     * 创建一个DynamicScheduledTaskService对象，并将其作为Bean返回
+     *
+     * @param dynamicScheduleProperties 动态调度属性对象
+     * @return DynamicScheduledTaskService对象
+     */
     @Bean
     public DynamicScheduledTaskService dynamicScheduledTaskService(DynamicScheduleProperties dynamicScheduleProperties) {
         return new DynamicScheduledTaskService(dynamicScheduleProperties);
     }
+
 }

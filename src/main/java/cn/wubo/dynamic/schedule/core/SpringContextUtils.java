@@ -4,9 +4,7 @@ import lombok.Getter;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
-@Component(value = "dynamicScheduleSpringContextUtils")
 public class SpringContextUtils implements ApplicationContextAware {
     @Getter
     private static ApplicationContext applicationContext = null;
@@ -26,7 +24,6 @@ public class SpringContextUtils implements ApplicationContextAware {
         return getApplicationContext().getBean(name);
     }
 
-
     /**
      * 获取指定类型的应用上下文中的Bean对象
      *
@@ -37,7 +34,6 @@ public class SpringContextUtils implements ApplicationContextAware {
     public static <T> T getBean(Class<T> clazz) {
         return getApplicationContext().getBean(clazz);
     }
-
 
     /**
      * 通过name，以及clazz返回指定的Bean
@@ -51,7 +47,6 @@ public class SpringContextUtils implements ApplicationContextAware {
         return getApplicationContext().getBean(name, clazz);
     }
 
-
     /**
      * 判断应用上下文中是否包含指定名称的bean
      *
@@ -62,9 +57,9 @@ public class SpringContextUtils implements ApplicationContextAware {
         return getApplicationContext().containsBean(name);
     }
 
-
     /**
      * 判断给定Bean是否是单例
+     *
      * @param name Bean的名称
      * @return 如果Bean是单例则返回true，否则返回false
      */
@@ -72,15 +67,13 @@ public class SpringContextUtils implements ApplicationContextAware {
         return getApplicationContext().isSingleton(name);
     }
 
-
     /**
      * 获取指定名称的对象类型。
      *
      * @param name 对象的名称
      * @return 指定名称的对象类型
      */
-    public static Class<? extends Object> getType(String name) {
+    public static Class<?> getType(String name) {
         return getApplicationContext().getType(name);
     }
-
 }

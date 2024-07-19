@@ -9,7 +9,7 @@
 
 > 更轻量化的任务调度功能，完全基于Spring Scheduling Tasks开发，  
 > 可以动态添加、删除任务调度，  
-> 可以应用内的Bean转化为任务调度执行。
+> 可以将Bean转化为任务调度执行。
 
 ## 代码示例
 1. 使用[动态调度](https://gitee.com/wb04307201/dynamic-schedule-spring-boot-starter)、[消息中间件](https://gitee.com/wb04307201/message-spring-boot-starter)、[动态编译工具](https://gitee.com/wb04307201/loader-util)、[实体SQL工具](https://gitee.com/wb04307201/sql-util)实现的[在线编码、动态调度、发送钉钉群消息、快速构造web页面Demo](https://gitee.com/wb04307201/dynamic-schedule-demo)

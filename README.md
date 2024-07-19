@@ -8,7 +8,7 @@
 ![MIT](https://img.shields.io/badge/License-Apache2.0-blue.svg) ![JDK](https://img.shields.io/badge/JDK-17+-green.svg) ![SpringBoot](https://img.shields.io/badge/Srping%20Boot-3+-green.svg)
 
 > 更轻量化的任务调度功能，完全基于Spring Scheduling Tasks开发，  
-> 可以动态添加、删除任务调度， 
+> 可以动态添加、删除任务调度，  
 > 可以应用内的Bean转化为任务调度执行。
 
 ## 代码示例

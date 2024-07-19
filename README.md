@@ -7,9 +7,7 @@
 [![fork](https://img.shields.io/github/forks/wb04307201/dynamic-schedule-spring-boot-starter)](https://github.com/wb04307201/dynamic-schedule-spring-boot-starter)  
 ![MIT](https://img.shields.io/badge/License-Apache2.0-blue.svg) ![JDK](https://img.shields.io/badge/JDK-17+-green.svg) ![SpringBoot](https://img.shields.io/badge/Srping%20Boot-3+-green.svg)
 
-> 动态添加、删除调度任务  
-> 注入DynamicScheduledTaskService后通过add和cancel添加、删除调度任务  
-> 可使用BeanMethodRunnable将Bean中的方法变成调度
+> 更轻量化的任务调度功能，完全基于Spring Scheduling Tasks开发，可以动态添加、删除调度任务  
 
 ## 代码示例
 1. 使用[动态调度](https://gitee.com/wb04307201/dynamic-schedule-spring-boot-starter)、[消息中间件](https://gitee.com/wb04307201/message-spring-boot-starter)、[动态编译工具](https://gitee.com/wb04307201/loader-util)、[实体SQL工具](https://gitee.com/wb04307201/sql-util)实现的[在线编码、动态调度、发送钉钉群消息、快速构造web页面Demo](https://gitee.com/wb04307201/dynamic-schedule-demo)

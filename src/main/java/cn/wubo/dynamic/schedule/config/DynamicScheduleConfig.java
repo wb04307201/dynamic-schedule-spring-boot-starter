@@ -10,17 +10,12 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties({DynamicScheduleProperties.class})
 public class DynamicScheduleConfig {
 
-    DynamicScheduleProperties dynamicScheduleProperties;
-
-    public DynamicScheduleConfig(DynamicScheduleProperties dynamicScheduleProperties) {
-        this.dynamicScheduleProperties = dynamicScheduleProperties;
-    }
-
     /**
-     * 创建一个DynamicScheduledTaskService对象，并将其作为Bean返回
+     * 定义一个动态定时任务服务
+     * 该服务负责根据配置属性初始化和管理动态定时任务
      *
-     * @param dynamicScheduleProperties 动态调度属性对象
-     * @return DynamicScheduledTaskService对象
+     * @param dynamicScheduleProperties 动态定时任务的配置属性，包含定时任务的调度策略等信息
+     * @return 返回初始化后的动态定时任务服务实例
      */
     @Bean
     public DynamicScheduledTaskService dynamicScheduledTaskService(DynamicScheduleProperties dynamicScheduleProperties) {
@@ -29,6 +24,7 @@ public class DynamicScheduleConfig {
 
     @Bean(name = "dynamicScheduleSpringContextUtils")
     public SpringContextUtils springContextUtils() {
+        // 创建并返回一个SpringContextUtils的实例，用于处理动态调度相关的Spring上下文操作
         return new SpringContextUtils();
     }
 }

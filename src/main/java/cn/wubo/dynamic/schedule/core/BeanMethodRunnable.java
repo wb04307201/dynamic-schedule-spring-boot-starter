@@ -27,25 +27,27 @@ public class BeanMethodRunnable implements Runnable {
 
     @Override
     public void run() {
-        // 获取目标对象
+        // 通过bean名称获取Spring上下文中的bean实例
         Object target = SpringContextUtils.getBean(beanName);
         try {
+            // 定义方法对象
             Method method;
+            // 如果方法参数为空，则调用无参数的方法
             if (methodParams.isEmpty()) {
-                // 获取目标对象的无参方法
+                // 获取无参数的方法
                 method = target.getClass().getMethod(methodName);
-                // 调用目标对象的无参方法
+                // 调用无参数的方法
                 method.invoke(target);
             } else {
-                // 获取目标对象的带参数方法
+                // 如果有方法参数，则调用有参数的方法
+                // 获取有参数的方法，参数类型由methodParams流转换而来
                 method = target.getClass().getMethod(methodName, methodParams.stream().map(Object::getClass).toArray(Class<?>[]::new));
-                // 调用目标对象的带参方法，并传入参数
+                // 调用有参数的方法，传入参数
                 method.invoke(target, methodParams);
             }
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            // 抛出自定义异常，包含错误信息
+            // 如果发生异常，抛出自定义的BeanMethodRunnableException
             throw new BeanMethodRunnableException(e.getMessage(), e);
         }
     }
-
 }

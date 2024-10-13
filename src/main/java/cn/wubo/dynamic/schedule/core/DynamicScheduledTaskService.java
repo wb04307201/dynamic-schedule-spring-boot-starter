@@ -1,19 +1,12 @@
 package cn.wubo.dynamic.schedule.core;
 
-import cn.wubo.dynamic.schedule.config.DynamicScheduleProperties;
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class DynamicScheduledTaskService {
-
-    private static final String DEBUG_MSG = "定时任务添加结果：{}";
 
     private final DynamicScheduledTaskRegistrar dynamicScheduledTaskRegistrar;
 
-    public DynamicScheduledTaskService(DynamicScheduleProperties dynamicScheduleProperties) {
-        this.dynamicScheduledTaskRegistrar = new DynamicScheduledTaskRegistrar(dynamicScheduleProperties.getPoolSize(), dynamicScheduleProperties.getThreadNamePrefix(), dynamicScheduleProperties.getRemoveOnCancel());
+    public DynamicScheduledTaskService(DynamicScheduledTaskRegistrar dynamicScheduledTaskRegistrar) {
+        this.dynamicScheduledTaskRegistrar = dynamicScheduledTaskRegistrar;
     }
-
 
     /**
      * 添加Cron表达式定时任务
@@ -23,10 +16,8 @@ public class DynamicScheduledTaskService {
      * @param runnable 定时任务的实现
      */
     public void add(String taskName, String cron, Runnable runnable) {
-        Boolean result = dynamicScheduledTaskRegistrar.addCronTask(taskName, cron, runnable);
-        log.debug(DEBUG_MSG, result);
+        dynamicScheduledTaskRegistrar.addCronTask(taskName, cron, runnable);
     }
-
 
     /**
      * 添加固定延迟定时任务
@@ -37,10 +28,8 @@ public class DynamicScheduledTaskService {
      * @param runnable     定时任务的实现
      */
     public void addFixedDelayTask(String taskName, Long interval, Long initialDelay, Runnable runnable) {
-        Boolean result = dynamicScheduledTaskRegistrar.addFixedDelayTask(taskName, interval, initialDelay, runnable);
-        log.debug(DEBUG_MSG, result);
+        dynamicScheduledTaskRegistrar.addFixedDelayTask(taskName, interval, initialDelay, runnable);
     }
-
 
     /**
      * 添加固定频率定时任务
@@ -51,10 +40,8 @@ public class DynamicScheduledTaskService {
      * @param runnable     定时任务的实现
      */
     public void addFixedRateTask(String taskName, Long interval, Long initialDelay, Runnable runnable) {
-        Boolean result = dynamicScheduledTaskRegistrar.addFixedRateTask(taskName, interval, initialDelay, runnable);
-        log.debug(DEBUG_MSG, result);
+        dynamicScheduledTaskRegistrar.addFixedRateTask(taskName, interval, initialDelay, runnable);
     }
-
 
     /**
      * 取消指定任务名称的任务。

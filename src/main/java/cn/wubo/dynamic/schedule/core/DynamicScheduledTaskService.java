@@ -1,13 +1,11 @@
 package cn.wubo.dynamic.schedule.core;
 
-import cn.wubo.dynamic.schedule.config.DynamicScheduleProperties;
-
 public class DynamicScheduledTaskService {
 
     private final DynamicScheduledTaskRegistrar dynamicScheduledTaskRegistrar;
 
-    public DynamicScheduledTaskService(DynamicScheduleProperties dynamicScheduleProperties) {
-        this.dynamicScheduledTaskRegistrar = new DynamicScheduledTaskRegistrar(dynamicScheduleProperties.getPoolSize(), dynamicScheduleProperties.getThreadNamePrefix(), dynamicScheduleProperties.getRemoveOnCancel());
+    public DynamicScheduledTaskService(DynamicScheduledTaskRegistrar dynamicScheduledTaskRegistrar) {
+        this.dynamicScheduledTaskRegistrar = dynamicScheduledTaskRegistrar;
     }
 
     /**

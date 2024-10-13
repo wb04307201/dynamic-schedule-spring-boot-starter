@@ -1,6 +1,5 @@
 package cn.wubo.dynamic.schedule.core;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.*;
 import org.springframework.util.Assert;
@@ -9,25 +8,13 @@ import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Slf4j
 public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
 
     private static final String ERROR_MSG = "定时任务[%s]已存在，添加失败";
     private final Map<String, ScheduledTask> scheduledTaskMap = new LinkedHashMap<>(16);
 
-    public DynamicScheduledTaskRegistrar(Integer poolSize, String threadNamePrefix, Boolean removeOnCancel) {
+    public DynamicScheduledTaskRegistrar(ThreadPoolTaskScheduler taskScheduler) {
         super();
-        // 两种实现方案
-        // ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(10);
-        // TaskScheduler taskScheduler = new ConcurrentTaskScheduler(scheduledExecutorService);
-        // 第二种实现方案
-        // 创建并配置线程池任务调度器
-        ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
-        taskScheduler.setPoolSize(poolSize); // 设置线程池大小
-        taskScheduler.setThreadNamePrefix(threadNamePrefix); // 设置线程名称前缀
-        taskScheduler.setRemoveOnCancelPolicy(removeOnCancel); // 设置取消策略
-        taskScheduler.setErrorHandler(t -> log.error("Dynamic scheduled task throw an exception: {}", t.getMessage(), t)); // 设置错误处理器
-        taskScheduler.initialize(); // 初始化调度器
         this.setScheduler(taskScheduler); // 设置当前调度器
     }
 

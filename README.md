@@ -25,7 +25,7 @@
 <dependency>
     <groupId>com.gitee.wb04307201</groupId>
     <artifactId>dynamic-schedule-spring-boot-starter</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 

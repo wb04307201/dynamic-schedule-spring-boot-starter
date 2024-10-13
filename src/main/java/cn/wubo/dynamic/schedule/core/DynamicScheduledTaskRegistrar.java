@@ -21,77 +21,78 @@ public class DynamicScheduledTaskRegistrar extends ScheduledTaskRegistrar {
     /**
      * 添加定时任务
      *
-     * @param taskName 任务名称，用作唯一标识
-     * @param cron     定时规则，遵循cron表达式
-     * @param runnable 需要定时执行的Runnable任务
-     * @return 总是返回Boolean.TRUE，表示任务添加成功
-     * @throws IllegalArgumentException 如果任务已存在，将抛出异常
+     * 本方法用于根据任务名称和cron表达式添加一个新的定时任务如果任务名称已存在，则抛出异常
+     *
+     * @param taskName 任务名称，用于唯一标识一个定时任务
+     * @param cron     cron表达式，定义了任务的执行时间规则
+     * @param runnable 需要定时执行的任务代码
+     * @throws IllegalArgumentException 如果任务名称已存在
      */
     public void addCronTask(String taskName, String cron, Runnable runnable) {
-        // 确保任务名称的唯一性，如果已存在则抛出异常
-        Assert.isTrue(scheduledTaskMap.containsKey(taskName), String.format(ERROR_MSG, taskName));
+        // 检查任务名称是否已存在，如果存在则抛出异常
+        Assert.isTrue(!scheduledTaskMap.containsKey(taskName), String.format(ERROR_MSG, taskName));
 
-        // 创建CronTask对象，封装了Runnable任务和cron定时规则
+        // 创建一个包含任务执行体和cron表达式的CronTask对象
         CronTask cronTask = new CronTask(runnable, cron);
 
-        // 调度中心安排 cron 任务
+        // 调度CronTask，返回一个ScheduledTask对象
         ScheduledTask scheduledTask = this.scheduleCronTask(cronTask);
 
-        // 将新创建的定时任务存储到任务映射表中，以便后续管理和查询
+        // 将任务名称和对应的ScheduledTask对象存入任务映射表中
         scheduledTaskMap.put(taskName, scheduledTask);
     }
 
     /**
      * 添加一个具有固定延迟的任务
-     * <p>
-     * 该方法用于创建一个在给定初始延迟后首次执行，然后在每次执行后都等待固定间隔时间的任务
-     * 它检查任务名称是否已存在于任务映射中，如果不存在，则创建一个新的定时任务并将其添加到映射中
      *
-     * @param taskName     任务名称，用于在任务映射中唯一标识任务
-     * @param interval     任务执行之间的固定间隔时间（秒）
-     * @param initialDelay 任务首次执行前的延迟时间（秒）
-     * @param runnable     包含任务具体执行逻辑的Runnable对象
-     * @return 总是返回Boolean.TRUE，表示任务已经成功添加
-     * @throws IllegalArgumentException 如果任务名称不存在于scheduledTaskMap中，则抛出异常
+     * 该方法用于创建并调度一个具有固定延迟的任务任务将在指定的初始延迟后首次执行，
+     * 并在每次执行完毕后，按照指定的间隔时间重复执行
+     *
+     * @param taskName 任务的名称，用于在任务地图中唯一标识任务
+     * @param interval 任务执行之间的间隔时间（以秒为单位）
+     * @param initialDelay 任务首次执行前的延迟时间（以秒为单位）
+     * @param runnable 包含任务执行逻辑的可运行对象
+     *
+     * @throws IllegalArgumentException 如果指定的taskName已经存在于任务地图中，抛出此异常以避免重复任务
      */
     public void addFixedDelayTask(String taskName, Long interval, Long initialDelay, Runnable runnable) {
-        // 确认任务名称已存在于任务映射中，如果不存在则抛出异常
-        Assert.isTrue(scheduledTaskMap.containsKey(taskName), String.format(ERROR_MSG, taskName));
+        // 确保任务地图中不存在相同的任务名称，以避免重复任务
+        Assert.isTrue(!scheduledTaskMap.containsKey(taskName), String.format(ERROR_MSG, taskName));
 
-        // 创建一个固定延迟任务对象，设置任务的执行间隔和初始延迟
+        // 创建一个固定延迟任务对象，定义任务的执行逻辑、执行间隔和初始延迟
         FixedDelayTask fixedDelayTask = new FixedDelayTask(runnable, Duration.ofSeconds(interval), Duration.ofSeconds(initialDelay));
 
-        // 调度创建的固定延迟任务，获取ScheduledTask对象
+        // 调度固定延迟任务，获取任务的调度信息
         ScheduledTask scheduledTask = this.scheduleFixedDelayTask(fixedDelayTask);
 
-        // 将任务名称和对应的ScheduledTask对象存入映射中，以便后续管理和查找
+        // 将任务名称和对应的调度任务对象存入任务地图中，以便后续管理和查找
         scheduledTaskMap.put(taskName, scheduledTask);
     }
 
     /**
-     * 添加一个定时任务
+     * 添加一个定时任务，以固定的时间间隔重复执行任务
      *
-     * @param taskName     定时任务的名称
-     * @param interval     任务执行的时间间隔（秒）
-     * @param initialDelay 任务首次执行的延迟时间（秒）
-     * @param runnable     任务的执行逻辑
-     * @return 总是返回true，表示任务添加成功
-     * <p>
-     * 此方法用于向系统中添加一个定时任务，该任务将以固定的时间间隔重复执行
-     * 任务的首次执行会有一个延迟时间，之后将严格按照指定的时间间隔执行
-     * 如果尝试添加一个已存在的任务，将会抛出异常，确保任务的唯一性
+     * @param taskName 任务名称，用于唯一标识任务
+     * @param interval 任务执行的时间间隔，单位为秒
+     * @param initialDelay 任务首次执行的延迟时间，单位为秒
+     * @param runnable 代表需要定时执行的任务
+     *
+     * 此方法首先会检查任务名称是否已存在于任务映射中，如果存在，则抛出异常
+     * 然后，它创建一个FixedRateTask对象，该对象封装了任务执行的细节
+     * 接着，调用scheduleFixedRateTask方法来安排任务的执行
+     * 最后，将任务名称和安排好的任务对象存入映射中，以便后续管理和查询
      */
     public void addFixedRateTask(String taskName, Long interval, Long initialDelay, Runnable runnable) {
-        // 确保任务的唯一性，如果任务已存在则抛出异常
-        Assert.isTrue(scheduledTaskMap.containsKey(taskName), String.format(ERROR_MSG, taskName));
+        // 确保任务名称的唯一性，如果已存在，则抛出异常
+        Assert.isTrue(!scheduledTaskMap.containsKey(taskName), String.format(ERROR_MSG, taskName));
 
-        // 创建一个定时任务对象，包含任务的执行逻辑、时间间隔和首次执行的延迟时间
+        // 创建FixedRateTask对象，定义任务的执行逻辑和时间间隔
         FixedRateTask fixedRateTask = new FixedRateTask(runnable, Duration.ofSeconds(interval), Duration.ofSeconds(initialDelay));
 
-        // 调度定时任务，获取ScheduledTask对象
+        // 安排任务的定时执行，并获取任务对象
         ScheduledTask scheduledTask = this.scheduleFixedRateTask(fixedRateTask);
 
-        // 将任务名称和对应的ScheduledTask对象存入映射，以便后续管理和查询
+        // 将任务名称和任务对象存入映射，以便后续管理和查询
         scheduledTaskMap.put(taskName, scheduledTask);
     }
 
